@@ -1,12 +1,12 @@
 module variables
+    integer hiddenLayerCells
     integer inputDataColumns, inputLayerCells
     integer inputDataRows, outputDataRows
     integer outputDataColumns, outputLayerCells
-    integer hiddenValuesSize
+    integer hiddenValuesRows, hiddenValuesColumns
     integer inputToHiddenWeightsRows, inputToHiddenWeightsColumns
     integer hiddenToOutputWeightsRows, hiddenToOutputWeightsColumns
 
-    integer hiddenLayerCells
 
     real lowerRandomWeightValue,upperRandomWeightValue
     real,allocatable:: inputToHiddenWeights(:,:), inputToHiddenWeightsDerivatives(:,:)
@@ -15,7 +15,7 @@ module variables
     real,allocatable:: hiddenValues(:,:), hiddenValuesSigmoid(:,:), hiddenValuesSigmoidDerivatives(:,:)
     real, allocatable:: outputValues(:,:), outputValuesExpected(:,:), outputValuesDifferences(:,:)
     real, allocatable:: outputValuesSigmoid(:,:), outputValuesSigmoidDerivative(:,:)
-    real, allocatable:: backPropagatingError(:,:)
+    real, allocatable:: delta3(:,:)
     real, allocatable:: hiddenToOutputDerivative(:,:)
     real, allocatable:: inputToHiddenDerivative(:,:)
     real, allocatable:: delta2(:,:), delta2_help(:,:)

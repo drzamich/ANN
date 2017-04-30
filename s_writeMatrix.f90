@@ -32,7 +32,7 @@ character(len=10000) row_separator
 !
 
 !Defining the cell width
-cell_width_str='6'      !must be in ''
+cell_width_str='8'      !must be in ''
 
 !Defining decimal places
 dec_places_str='3'      !must be in ''
