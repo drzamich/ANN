@@ -18,7 +18,9 @@ module variables
     real, allocatable:: delta3(:,:)
     real, allocatable:: hiddenToOutputDerivative(:,:)
     real, allocatable:: inputToHiddenDerivative(:,:)
-    real, allocatable:: delta2(:,:), delta2_help(:,:)
+    real, allocatable:: inputToHiddenCorrections(:,:), hiddenToOutputCorrections(:,:)
+    real, allocatable:: hiddenToOutputCorrectionsOld(:,:), inputToHiddenCorrectionsOld(:,:)
+    real, allocatable:: delta2(:,:)
 
 
     real randomFromRange
@@ -26,6 +28,6 @@ module variables
     real sigmoid, sigmoidDerivative
     integer i,j,k,l,m
     real cost
-    real step
+    real step, momentum
 
 end module

@@ -52,9 +52,15 @@ subroutine trainingPreparation
                             lowerRandomWeightValue,upperRandomWeightValue)
 
 
-    !allocate(hiddenToOutputDerivative(hiddenValuesRows,hiddenValuesColumns))
-
     allocate(hiddenToOutputDerivative(outputDataRows,outputDataColumns))
+
+    allocate(hiddenToOutputCorrections(outputDataRows,outputDataColumns))
+    allocate(hiddenToOutputCorrectionsOld(outputDataRows,outputDataColumns))
+
+
+    allocate(inputToHiddenCorrections(inputDataColumns,inputDataRows))
+    allocate(inputToHiddenCorrectionsOld(inputDataColumns,inputDataRows))
+
     allocate(delta2(outputDataRows,outputDataRows))
     allocate(inputToHiddenDerivative(inputDataColumns,inputDataRows))
 end subroutine
@@ -77,38 +83,43 @@ subroutine trainingFirstPhase
     use variables
     implicit none
 
-do m=1,3
+    inputToHiddenCorrectionsOld = 0.0
+    hiddenToOutputCorrectionsOld = 0.0
 
-    write(*,*) "step", m
+do m=1,50
+
+    write(*,*) "-----------------------------------------"
+    write(*,*) "Step", m
 
     write(*,*)
     write(*,*) "Weights from input to hidden layer"
     call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
-    write(*,*)
-    write(*,*) "Weights from hidden to output layer"
-    call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
 
     ! values of hidden layer = input values * weights
     hiddenValues = matmul(inputValues,inputToHiddenWeights)
 
-    !write(*,*) "hidden values"
-    !call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
+    write(*,*)
+    write(*,*) "hidden values"
+    call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
 
     !sigmoiding hidden values
     call matrixSigmoid(hiddenValues,hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
 
-    !write(*,*) "hidden values sigmoided"
-    !call writeMatrix(hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
+    write(*,*)
+    write(*,*) "hidden values sigmoided"
+    call writeMatrix(hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
+
+    write(*,*)
+    write(*,*) "Weights from hidden to output layer"
+    call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
     !values of output layer = hidden values * weights
     outputValues = matmul(hiddenValuesSigmoid,hiddenToOutputWeights)
 
-    !write(*,*) "output values"
-    !call writeMatrix(outputValues,outputDataRows,outputDataColumns)
-
-
+    write(*,*) "output values"
+    call writeMatrix(outputValues,outputDataRows,outputDataColumns)
 
     !sigmoiding output values
     call matrixSigmoid(outputValues,outputValuesSigmoid,outputDataRows,outputDataColumns)
@@ -142,10 +153,6 @@ do m=1,3
 
     inputToHiddenDerivative = matmul(transpose(inputValues),delta2)
 
-    step = 1 !learni
-    inputToHiddenWeights = inputToHiddenWeights - step*inputToHiddenDerivative
-    hiddenToOutputWeights = hiddenToOutputWeights - step*hiddenToOutputDerivative
-
 
 
 
@@ -156,38 +163,46 @@ do m=1,3
     !call writeMatrix(hiddenToOutputDerivative,hiddenValuesRows,hiddenValuesColumns)
     call writeMatrix(hiddenToOutputDerivative,outputDataRows,outputDataColumns)
 
+    call random_number(momentum)
+    call random_number(step)
+
+    write (*,*) "Learning rate:", step
+
+    if(m.gt.1) then
+    write(*,*) "Momentum:", momentum
+
+        write(*,*)
+        write(*,*) "Corrections from previous step"
+        write(*,*) "Input -> hidden"
+        call writeMatrix(inputToHiddenCorrectionsOld,inputDataColumns,inputDataRows)
+        write(*,*) "Hidden -> output"
+        call writeMatrix(hiddenToOutputCorrectionsOld,outputDataRows,outputDataColumns)
+
+    end if
+
+    inputToHiddenCorrections = -step*inputToHiddenDerivative + momentum*inputToHiddenCorrectionsOld
+    hiddenToOutputCorrections = -step*hiddenToOutputDerivative + momentum*hiddenToOutputCorrectionsOld
+
+    write(*,*)
+    write(*,*) "NEW Input->Hidden corrections"
+    call writeMatrix(inputToHiddenCorrections,inputDataColumns,inputDataRows)
+
+    write(*,*)
+    write(*,*) "NEW Hidden->Output corrections"
+    call writeMatrix(hiddenToOutputCorrections,outputDataRows,outputDataColumns)
+
+    inputToHiddenWeights = inputToHiddenWeights + inputToHiddenCorrections
+    hiddenToOutputWeights = hiddenToOutputWeights + hiddenToOutputCorrections
+
+
     write(*,*)
     write(*,*) "Cost equals"
     call costFunction(outputValuesSigmoid,outputValuesExpected,outputDataRows,outputDataColumns,cost)
     write(*,*) cost
 
-
-
-
-
-
+    inputToHiddenCorrectionsOld = inputToHiddenCorrections
+    hiddenToOutputCorrectionsOld = hiddenToOutputCorrections
 end do
 end subroutine
-
-
-    !now outputValuesSigmoid matrix is the matrix with our results
-
-    !write(*,*)
-    !write(*,*) "values of output layer"
-    !call writeMatrix(outputValuesSigmoid,outputDataRows,outputDataColumns)
-
-    !outputValuesSigmoidDerivative matrix is <delta>3 from the video
-
-
-   ! write(*,*) "Before"
-    !call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
-    !call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
-    !write(*,*) "Derivatives"
-    !call writeMatrix(inputToHiddenDerivative,inputDataColumns,inputDataRows)
-    !call writeMatrix(hiddenToOutputDerivative,hiddenValuesRows,hiddenValuesColumns)
-
-    !write(*,*) "After"
-    !call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
-    !call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
 
