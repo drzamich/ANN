@@ -2,27 +2,18 @@ subroutine trainingPreparation
     use variables
     implicit none
 
+    call readInputFile
 
-    !Defining information about our training data
-    inputDataRows = 3
-    outputDataRows = inputDataRows
     hiddenLayerCells = inputDataRows
 
-    inputDataColumns = 2       !number of cells in input layer
-    outputDataColumns = 1      !number of cells in output layer
-
     !allocating sizes of input and output matrices
-    allocate(inputValues(inputDataRows,inputDataColumns))
     allocate(outputValues(outputDataRows,outputDataColumns))
     allocate(outputValuesSigmoid(outputDataRows,outputDataColumns))
     allocate(outputValuesSigmoidDerivative(outputDataRows,outputDataColumns))
-    allocate(outputValuesExpected(outputDataRows,outputDataColumns))
     allocate(outputValuesDifferences(outputDataRows,outputDataColumns))
     allocate(delta3(outputDataRows,outputDataColumns))
 
-    !putting in training data
-    inputValues = reshape((/3.0,5.0,10.0,5.0,1.0,2.0/),shape(inputValues))
-    outputValuesExpected = reshape((/75.0,82.0,93.0/),shape(outputValuesExpected))
+
 
     !Defining information about weights matrices
     !INPUT -> HIDDEN
@@ -48,29 +39,23 @@ subroutine trainingPreparation
     allocate(hiddenValuesSigmoid(hiddenValuesRows,hiddenValuesColumns))
     allocate(hiddenValuesSigmoidDerivatives(hiddenValuesRows,hiddenValuesColumns))
 
-    !Setting boundaries for random weights
-    lowerRandomWeightValue = -0.1
-    upperRandomWeightValue = 0.1
-
 
     !Assigning random weights
     ! INPUT->HIDDEN
-    !call assignRandomWeights(inputToHiddenWeights,&
-     !                       inputToHiddenWeightsRows,inputToHiddenWeightsColumns,&
-      !                      lowerRandomWeightValue,upperRandomWeightValue)
+    call assignRandomWeights(inputToHiddenWeights,&
+                            inputToHiddenWeightsRows,inputToHiddenWeightsColumns,&
+                            lowerRandomWeightValue,upperRandomWeightValue)
 
     ! HIDDEN->OUTPUT
-    !call assignRandomWeights(hiddenToOutputWeights,&
-     !                       hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns,&
-      !                      lowerRandomWeightValue,upperRandomWeightValue)
+    call assignRandomWeights(hiddenToOutputWeights,&
+                            hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns,&
+                            lowerRandomWeightValue,upperRandomWeightValue)
 
-    inputToHiddenWeights = reshape((/-0.86049896,0.69273711,0.82632697,&
-    0.05694213,-0.46733722,-1.51118872/),shape(inputToHiddenWeights))
-    hiddenToOutputWeights = reshape((/1.55175145,-1.50828164,0.74075525/),shape(hiddenToOutputWeights))
 
-    allocate(hiddenToOutputDerivative(hiddenValuesRows,hiddenValuesColumns))
+    !allocate(hiddenToOutputDerivative(hiddenValuesRows,hiddenValuesColumns))
+
+    allocate(hiddenToOutputDerivative(outputDataRows,outputDataColumns))
     allocate(delta2(outputDataRows,outputDataRows))
-    allocate(delta2_help(outputDataRows,outputDataRows))
     allocate(inputToHiddenDerivative(inputDataColumns,inputDataRows))
 end subroutine
 
@@ -108,42 +93,46 @@ do m=1,3
     ! values of hidden layer = input values * weights
     hiddenValues = matmul(inputValues,inputToHiddenWeights)
 
-    write(*,*) "hidden values"
-    call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
+    !write(*,*) "hidden values"
+    !call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
 
     !sigmoiding hidden values
     call matrixSigmoid(hiddenValues,hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
 
-    write(*,*) "hidden values sigmoided"
-    call writeMatrix(hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
+    !write(*,*) "hidden values sigmoided"
+    !call writeMatrix(hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
 
     !values of output layer = hidden values * weights
     outputValues = matmul(hiddenValuesSigmoid,hiddenToOutputWeights)
 
-    write(*,*) "output values"
-    call writeMatrix(outputValues,outputDataRows,outputDataColumns)
+    !write(*,*) "output values"
+    !call writeMatrix(outputValues,outputDataRows,outputDataColumns)
+
+
 
     !sigmoiding output values
     call matrixSigmoid(outputValues,outputValuesSigmoid,outputDataRows,outputDataColumns)
 
-    write(*,*) "output values sigmoid"
+    write(*,*) "output values (sigmoided)"
     call writeMatrix(outputValuesSigmoid,outputDataRows,outputDataColumns)
+
+    !write(*,*) "output values sigmoid"
+    !call writeMatrix(outputValuesSigmoid,outputDataRows,outputDataColumns)
 
     call matrixSigmoidDerivative(outputValues,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
-    write(*,*) "output sigmoids derivative"
-    call writeMatrix(outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
+    !write(*,*) "output sigmoids derivative"
+    !call writeMatrix(outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
     delta3 = (-1)*(outputValuesExpected-outputValuesSigmoid)*outputValuesSigmoidDerivative
     !delta3 = (-1)*(outputValuesExpected-outputValues)*outputValuesSigmoidDerivative
 
+    !write(*,*) "differences"
+    !call writeMatrix(outputValuesExpected-outputValuesSigmoid,outputDataRows,outputDataColumns)
 
-    write(*,*) "differences"
-    call writeMatrix(outputValuesExpected-outputValuesSigmoid,outputDataRows,outputDataColumns)
 
-
-    write(*,*) "delta3"
-    call writeMatrix(delta3,outputDataRows,outputDataColumns)
+    !write(*,*) "delta3"
+    !call writeMatrix(delta3,outputDataRows,outputDataColumns)
 
     hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
 
@@ -164,7 +153,8 @@ do m=1,3
     call writeMatrix(inputToHiddenDerivative,inputDataColumns,inputDataRows)
 
     write(*,*) "derivative hidden->output"
-    call writeMatrix(hiddenToOutputDerivative,hiddenValuesRows,hiddenValuesColumns)
+    !call writeMatrix(hiddenToOutputDerivative,hiddenValuesRows,hiddenValuesColumns)
+    call writeMatrix(hiddenToOutputDerivative,outputDataRows,outputDataColumns)
 
     write(*,*)
     write(*,*) "Cost equals"
