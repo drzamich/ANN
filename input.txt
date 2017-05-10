@@ -14,5 +14,5 @@ OUTPUT VALUES
 
 -0.1    -lowerRandomWeightValue
 0.1     -upperRandomWeightValue
-3       - hidden layer cells
+4       - hidden layer cells
 10       - number of iterations
