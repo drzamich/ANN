@@ -89,6 +89,10 @@ do m=1,iterationSteps
 
     write(*,*)
     write(*,*) "Weights from input to hidden layer"
+    do i=1,hiddenLayerCells
+        inputToHiddenWeights(inputToHiddenWeightsRows,i) = tresholdValues(i)
+    end do
+
     call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
 

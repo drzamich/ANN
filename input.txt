@@ -1,11 +1,12 @@
+4   -hidden layer cells
 3   -inputDataRows - number of cells in input layer
-1   -inputDataColumns
+2   -inputDataColumns
 1   -outputData columns - number of cells in output layer
 
 INPUT VALUES
-1
-2
-3
+1 1
+2 1
+3 1
 
 OUTPUT VALUES
 2
@@ -14,5 +15,10 @@ OUTPUT VALUES
 
 -0.1    -lowerRandomWeightValue
 0.1     -upperRandomWeightValue
-4       - hidden layer cells
-10       - number of iterations
+20       - number of iterations
+
+TRESHOLD VALUES FOR HIDDEN LAYER NEURONS
+-0.5
+-0.5
+-0.5
+-0.5

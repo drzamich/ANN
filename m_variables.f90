@@ -21,6 +21,7 @@ module variables
     real, allocatable:: inputToHiddenCorrections(:,:), hiddenToOutputCorrections(:,:)
     real, allocatable:: hiddenToOutputCorrectionsOld(:,:), inputToHiddenCorrectionsOld(:,:)
     real, allocatable:: delta2(:,:)
+    real, allocatable:: tresholdValues(:)
 
 
     real randomFromRange
