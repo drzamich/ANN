@@ -29,6 +29,8 @@ subroutine readInputFile
     read(10,*)
     read(10,*) lowerRandomWeightValue
     read(10,*) upperRandomWeightValue
+    read(10,*) hiddenLayerCells
+    read(10,*) iterationSteps
 
     close(10)
 end subroutine

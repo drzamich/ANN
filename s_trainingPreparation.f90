@@ -4,15 +4,15 @@ subroutine trainingPreparation
 
     call readInputFile
 
-    hiddenLayerCells = inputDataRows
 
     !allocating sizes of input and output matrices
     allocate(outputValues(outputDataRows,outputDataColumns))
     allocate(outputValuesSigmoid(outputDataRows,outputDataColumns))
     allocate(outputValuesSigmoidDerivative(outputDataRows,outputDataColumns))
-    allocate(outputValuesDifferences(outputDataRows,outputDataColumns))
-    allocate(delta3(outputDataRows,outputDataColumns))
 
+    allocate(outputValuesDifferences(outputDataRows,outputDataColumns))
+
+    allocate(delta3(outputDataRows,outputDataColumns))
 
 
     !Defining information about weights matrices
@@ -21,15 +21,19 @@ subroutine trainingPreparation
     inputToHiddenWeightsColumns = hiddenLayerCells   ! number of cells in hidden layer
 
     allocate(inputToHiddenWeights(inputToHiddenWeightsRows,inputToHiddenWeightsColumns))
-    allocate(inputToHiddenWeightsDerivatives(inputToHiddenWeightsRows,inputToHiddenWeightsColumns))
+    allocate(inputToHiddenDerivative(inputToHiddenWeightsRows,inputToHiddenWeightsColumns))
+    allocate(inputToHiddenCorrections(inputToHiddenWeightsRows,inputToHiddenWeightsColumns))
+    allocate(inputToHiddenCorrectionsOld(inputToHiddenWeightsRows,inputToHiddenWeightsColumns))
 
 
     !HIDDEN-> OUTPUT
-    hiddenToOutputWeightsRows = outputDataRows
+    hiddenToOutputWeightsRows = hiddenLayerCells
     hiddenToOutputWeightsColumns = outputDataColumns
 
     allocate(hiddenToOutputWeights(hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns))
-    allocate(hiddenToOutputWeightsDerivatives(hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns))
+    allocate(hiddenToOutputDerivative(hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns))
+    allocate(hiddenToOutputCorrections(hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns))
+    allocate(hiddenToOutputCorrectionsOld(hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns))
 
     !Defining information about values matrices
     hiddenValuesRows = inputDataRows    !size of the matrix of hidden layer values
@@ -52,17 +56,9 @@ subroutine trainingPreparation
                             lowerRandomWeightValue,upperRandomWeightValue)
 
 
-    allocate(hiddenToOutputDerivative(outputDataRows,outputDataColumns))
-
-    allocate(hiddenToOutputCorrections(outputDataRows,outputDataColumns))
-    allocate(hiddenToOutputCorrectionsOld(outputDataRows,outputDataColumns))
-
-
-    allocate(inputToHiddenCorrections(inputDataColumns,inputDataRows))
-    allocate(inputToHiddenCorrectionsOld(inputDataColumns,inputDataRows))
 
     allocate(delta2(outputDataRows,outputDataRows))
-    allocate(inputToHiddenDerivative(inputDataColumns,inputDataRows))
+
 end subroutine
 
 subroutine displayTrainingData
@@ -86,7 +82,7 @@ subroutine trainingFirstPhase
     inputToHiddenCorrectionsOld = 0.0
     hiddenToOutputCorrectionsOld = 0.0
 
-do m=1,50
+do m=1,iterationSteps
 
     write(*,*) "-----------------------------------------"
     write(*,*) "Step", m
@@ -157,11 +153,11 @@ do m=1,50
 
 
     write(*,*) "derivative input->hidden"
-    call writeMatrix(inputToHiddenDerivative,inputDataColumns,inputDataRows)
+    call writeMatrix(inputToHiddenDerivative,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
     write(*,*) "derivative hidden->output"
     !call writeMatrix(hiddenToOutputDerivative,hiddenValuesRows,hiddenValuesColumns)
-    call writeMatrix(hiddenToOutputDerivative,outputDataRows,outputDataColumns)
+    call writeMatrix(hiddenToOutputDerivative,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
     call random_number(momentum)
     call random_number(step)
@@ -174,9 +170,9 @@ do m=1,50
         write(*,*)
         write(*,*) "Corrections from previous step"
         write(*,*) "Input -> hidden"
-        call writeMatrix(inputToHiddenCorrectionsOld,inputDataColumns,inputDataRows)
+        call writeMatrix(inputToHiddenCorrectionsOld,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
         write(*,*) "Hidden -> output"
-        call writeMatrix(hiddenToOutputCorrectionsOld,outputDataRows,outputDataColumns)
+        call writeMatrix(hiddenToOutputCorrectionsOld,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
     end if
 
@@ -185,11 +181,11 @@ do m=1,50
 
     write(*,*)
     write(*,*) "NEW Input->Hidden corrections"
-    call writeMatrix(inputToHiddenCorrections,inputDataColumns,inputDataRows)
+    call writeMatrix(inputToHiddenCorrections,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
     write(*,*)
     write(*,*) "NEW Hidden->Output corrections"
-    call writeMatrix(hiddenToOutputCorrections,outputDataRows,outputDataColumns)
+    call writeMatrix(hiddenToOutputCorrections,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
     inputToHiddenWeights = inputToHiddenWeights + inputToHiddenCorrections
     hiddenToOutputWeights = hiddenToOutputWeights + hiddenToOutputCorrections

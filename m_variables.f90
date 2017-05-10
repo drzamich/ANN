@@ -29,5 +29,6 @@ module variables
     integer i,j,k,l,m
     real cost
     real step, momentum
+    integer iterationSteps
 
 end module
