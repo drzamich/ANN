@@ -6,6 +6,9 @@
 *.cbp
 *.layout
 *.depend
+*.mod
+*.exe
+*.bat
 
 # generated directories
 bin/
