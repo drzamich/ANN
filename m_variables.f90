@@ -10,7 +10,8 @@ module variables
 
     real lowerRandomWeightValue,upperRandomWeightValue
 
-
+    real, allocatable:: inputValuesNormalized(:,:), outputValuesNormalized(:,:)
+    real, allocatable:: outputValuesExpectedNormalized(:,:), outputValuesDenormalized(:,:)
     real,allocatable:: inputToHiddenWeights(:,:), inputToHiddenWeightsDerivatives(:,:)
     real,allocatable:: hiddenToOutputWeights(:,:), hiddenToOutputWeightsDerivatives(:,:)
     real,allocatable:: inputValues(:,:)
@@ -22,12 +23,7 @@ module variables
     real, allocatable:: inputToHiddenDerivative(:,:)
     real, allocatable:: delta2(:,:)
 
-
-    real, allocatable:: inputValuesNormalized(:,:), outputValuesNormalized(:,:)
-    real, allocatable:: outputValuesExpectedNormalized(:,:), outputValuesDenormalized(:,:)
-
-
-    real outputValuesParameters(3)
+    real outputValuesParameters(3), inputValuesParameters(3)
 
     real randomFromRange
     real reallyRandom

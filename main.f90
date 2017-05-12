@@ -10,6 +10,4 @@ program main
 
 
 
-
-
 end

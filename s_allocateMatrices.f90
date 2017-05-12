@@ -19,7 +19,6 @@ subroutine allocateMatrices
     allocate(outputValuesExpectedNormalized(outputDataRows,outputDataColumns))
     allocate(outputValuesDenormalized(outputDataRows,outputDataColumns))
 
-    allocate(outputValuesDifferences(outputDataRows,outputDataColumns))
 
     allocate(delta3(outputDataRows,outputDataColumns))
 

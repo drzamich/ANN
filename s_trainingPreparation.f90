@@ -14,21 +14,30 @@ subroutine trainingPreparation
     call assignRandomWeights(hiddenToOutputWeights,&
                             hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns,&
                             lowerRandomWeightValue,upperRandomWeightValue)
-
-
 end subroutine
 
 subroutine displayTrainingData
     use variables
     implicit none
 
+    call normalizeValues(inputValues,inputValuesNormalized,inputDataRows,inputValuesParameters)
+    call normalizeValues(outputValuesExpected,outputValuesExpectedNormalized,outputDataRows,outputValuesParameters)
+
     write(*,*) "Input values"
     call writeMatrix(inputValues,inputDataRows,inputDataColumns)
+
+    write(*,*) "Input values normalized"
+    call writeMatrix(inputValuesNormalized,inputDataRows,inputDataColumns)
+
 
     write(*,*)
     write(*,*) "(Expected) output values"
     call writeMatrix(outputValuesExpected,outputDataRows,outputDataColumns)
 
+
+    write(*,*)
+    write(*,*) "(Expected) output values normalized"
+    call writeMatrix(outputValuesExpectedNormalized,outputDataRows,outputDataColumns)
 
 end subroutine
 
