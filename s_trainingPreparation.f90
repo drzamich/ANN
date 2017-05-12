@@ -57,7 +57,7 @@ do m=1,iterationSteps
 
 
     ! values of hidden layer = input values * weights
-    hiddenValues = matmul(inputValues,inputToHiddenWeights)
+    hiddenValues = matmul(inputValuesNormalized,inputToHiddenWeights)
 
     write(*,*)
     write(*,*) "hidden values"
@@ -121,6 +121,7 @@ do m=1,iterationSteps
     call costFunction(outputValuesSigmoid,outputValuesExpected,outputDataRows,outputDataColumns,cost)
     write(*,*) cost
 
+    costValues(m) = cost
 end do
 end subroutine
 

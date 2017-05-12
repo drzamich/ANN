@@ -13,6 +13,6 @@ OUTPUT VALUES
 4
 6
 
--0.1    -lowerRandomWeightValue
-0.1     -upperRandomWeightValue
-2       - number of iterations
+-0.01    -lowerRandomWeightValue
+0.01     -upperRandomWeightValue
+10       - number of iterations
