@@ -130,12 +130,13 @@ do m=1,iterationSteps
     costValues(m) = cost
 end do
 
-!do i=1,iterationSteps
- !   write(*,*) costValues(i)
-!end do
+
+
 
 call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
 call writeMatrix(outputValuesDenormalized,outputDataRows,outputDataColumns)
+
+call plotCost
 end subroutine
 
 
