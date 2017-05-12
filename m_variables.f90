@@ -1,28 +1,33 @@
 module variables
     integer hiddenLayerCells
-    integer inputDataColumns, inputLayerCells
-    integer inputDataRows, outputDataRows
-    integer outputDataColumns, outputLayerCells
+    integer inputDataRows, inputDataColumns
+    integer outputDataRows, outputDataColumns
+
     integer hiddenValuesRows, hiddenValuesColumns
     integer inputToHiddenWeightsRows, inputToHiddenWeightsColumns
     integer hiddenToOutputWeightsRows, hiddenToOutputWeightsColumns
 
 
     real lowerRandomWeightValue,upperRandomWeightValue
+
+
     real,allocatable:: inputToHiddenWeights(:,:), inputToHiddenWeightsDerivatives(:,:)
     real,allocatable:: hiddenToOutputWeights(:,:), hiddenToOutputWeightsDerivatives(:,:)
     real,allocatable:: inputValues(:,:)
     real,allocatable:: hiddenValues(:,:), hiddenValuesSigmoid(:,:), hiddenValuesSigmoidDerivatives(:,:)
-    real, allocatable:: outputValues(:,:), outputValuesExpected(:,:), outputValuesDifferences(:,:)
+    real, allocatable:: outputValues(:,:), outputValuesExpected(:,:)
     real, allocatable:: outputValuesSigmoid(:,:), outputValuesSigmoidDerivative(:,:)
     real, allocatable:: delta3(:,:)
     real, allocatable:: hiddenToOutputDerivative(:,:)
     real, allocatable:: inputToHiddenDerivative(:,:)
-    real, allocatable:: inputToHiddenCorrections(:,:), hiddenToOutputCorrections(:,:)
-    real, allocatable:: hiddenToOutputCorrectionsOld(:,:), inputToHiddenCorrectionsOld(:,:)
     real, allocatable:: delta2(:,:)
-    real, allocatable:: tresholdValues(:)
 
+
+    real, allocatable:: inputValuesNormalized(:,:), outputValuesNormalized(:,:)
+    real, allocatable:: outputValuesExpectedNormalized(:,:), outputValuesDenormalized(:,:)
+
+
+    real outputValuesParameters(3)
 
     real randomFromRange
     real reallyRandom

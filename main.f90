@@ -1,7 +1,6 @@
 program main
-    !use variables
+    use variables
     implicit none
-
 
     call trainingPreparation
 

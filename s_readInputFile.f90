@@ -12,7 +12,6 @@ subroutine readInputFile
     read(10,*)
 
     allocate(inputValues(inputDataRows,inputDataColumns))
-    allocate(tresholdValues(hiddenLayerCells))
 
     do i=1,inputDataRows
         read(10,*) (inputValues(i,j), j=1,inputDataColumns) !short form of the loop
@@ -32,11 +31,5 @@ subroutine readInputFile
     read(10,*) lowerRandomWeightValue
     read(10,*) upperRandomWeightValue
     read(10,*) iterationSteps
-
-    read(10,*)
-    read(10,*)
-    do i=1,hiddenLayerCells
-        read(10,*) tresholdValues(i)
-    end do
     close(10)
 end subroutine
