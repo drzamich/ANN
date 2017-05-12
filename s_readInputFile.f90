@@ -31,5 +31,7 @@ subroutine readInputFile
     read(10,*) lowerRandomWeightValue
     read(10,*) upperRandomWeightValue
     read(10,*) iterationSteps
+    read(10,*) stepIndicatorProgram
+    read(10,*) stepIndicatorChart
     close(10)
 end subroutine

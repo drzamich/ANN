@@ -26,24 +26,23 @@ subroutine displayTrainingData
     write(*,*) "Input values"
     call writeMatrix(inputValues,inputDataRows,inputDataColumns)
 
-    write(*,*) "Input values normalized"
-    call writeMatrix(inputValuesNormalized,inputDataRows,inputDataColumns)
-
+    !write(*,*) "Input values normalized"
+    !call writeMatrix(inputValuesNormalized,inputDataRows,inputDataColumns)
 
     write(*,*)
     write(*,*) "(Expected) output values"
     call writeMatrix(outputValuesExpected,outputDataRows,outputDataColumns)
 
 
-    write(*,*)
-    write(*,*) "(Expected) output values normalized"
-    call writeMatrix(outputValuesExpectedNormalized,outputDataRows,outputDataColumns)
+    !write(*,*)
+    !write(*,*) "(Expected) output values normalized"
+    !call writeMatrix(outputValuesExpectedNormalized,outputDataRows,outputDataColumns)
 
     call matrixSigmoid(outputValuesExpectedNormalized,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
 
-    write(*,*)
-    write(*,*) "(Expected) output values normalized sigmoided"
-    call writeMatrix(outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
+    !write(*,*)
+    !write(*,*) "(Expected) output values normalized sigmoided"
+    !call writeMatrix(outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
 
 
 end subroutine
@@ -52,7 +51,8 @@ subroutine trainingFirstPhase
     use variables
     implicit none
 
-do m=1,iterationSteps
+do i=1,iterationSteps
+
 
     !write(*,*) "-----------------------------------------"
     !write(*,*) "Step", m
@@ -127,16 +127,25 @@ do m=1,iterationSteps
     call costFunction(outputValuesSigmoid,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns,cost)
     !write(*,*) cost
 
-    costValues(m) = cost
+    costValues(i) = cost
+
+    if(mod(i,stepIndicatorProgram)==0) then
+        write(*,*) "Step", i
+    end if
+
+    if(i==iterationSteps) then
+        write(*,*) outputValues
+        write(*,*) inputToHiddenWeights
+        write(*,*) hiddenToOutputWeights
+    end if
+
 end do
 
 
-
-
 call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
+
+write(*,*) "Values after training the net"
 call writeMatrix(outputValuesDenormalized,outputDataRows,outputDataColumns)
 
 call plotCost
 end subroutine
-
-

@@ -37,5 +37,10 @@ module variables
     real cost
     real step, momentum
     integer iterationSteps
+    integer stepIndicatorProgram, stepIndicatorChart
+
+    real, allocatable:: inputTraining(:,:), outputTraining(:,:), inputTrainingNormalized(:,:), outputTrainingNormalized(:,:)
+    real, allocatable:: trainingSigmoid(:,:)
+    real trainingParameters(3)
 
 end module

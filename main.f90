@@ -8,6 +8,6 @@ program main
 
     call trainingFirstPhase
 
-
+    call netCheck
 
 end
