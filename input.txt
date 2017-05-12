@@ -15,4 +15,4 @@ OUTPUT VALUES
 
 -0.01    -lowerRandomWeightValue
 0.01     -upperRandomWeightValue
-10       - number of iterations
+5000       - number of iterations

@@ -54,50 +54,50 @@ subroutine trainingFirstPhase
 
 do m=1,iterationSteps
 
-    write(*,*) "-----------------------------------------"
-    write(*,*) "Step", m
+    !write(*,*) "-----------------------------------------"
+    !write(*,*) "Step", m
 
-    write(*,*)
-    write(*,*) "Weights from input to hidden layer"
-    call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
+    !write(*,*)
+    !write(*,*) "Weights from input to hidden layer"
+    !call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
 
 
     ! values of hidden layer = input values * weights
     hiddenValues = matmul(inputValuesNormalized,inputToHiddenWeights)
 
-    write(*,*)
-    write(*,*) "hidden values"
-    call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
+    !write(*,*)
+    !write(*,*) "hidden values"
+    !call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
 
     !sigmoiding hidden values
     call matrixSigmoid(hiddenValues,hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
 
-    write(*,*)
-    write(*,*) "hidden values sigmoided"
-    call writeMatrix(hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
+    !write(*,*)
+    !write(*,*) "hidden values sigmoided"
+    !call writeMatrix(hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
 
-    write(*,*)
-    write(*,*) "Weights from hidden to output layer"
-    call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
+    !write(*,*)
+    !write(*,*) "Weights from hidden to output layer"
+    !call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
     !values of output layer = hidden values * weights
     outputValues = matmul(hiddenValuesSigmoid,hiddenToOutputWeights)
 
-    write(*,*) "output values"
-    call writeMatrix(outputValues,outputDataRows,outputDataColumns)
+    !write(*,*) "output values"
+    !call writeMatrix(outputValues,outputDataRows,outputDataColumns)
 
     !sigmoiding output values
     call matrixSigmoid(outputValues,outputValuesSigmoid,outputDataRows,outputDataColumns)
 
-    write(*,*) "output values (sigmoided)"
-    call writeMatrix(outputValuesSigmoid,outputDataRows,outputDataColumns)
+    !write(*,*) "output values (sigmoided)"
+    !call writeMatrix(outputValuesSigmoid,outputDataRows,outputDataColumns)
 
 
     call matrixSigmoidDerivative(outputValues,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
 
-    delta3 = (-1)*(outputValuesExpectedNormalized-outputValuesSigmoid)*outputValuesSigmoidDerivative
+    delta3 = (-1)*(outputValuesExpectedNormalizedSigmoided-outputValuesSigmoid)*outputValuesSigmoidDerivative
 
     hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
 
@@ -108,28 +108,34 @@ do m=1,iterationSteps
     inputToHiddenDerivative = matmul(transpose(inputValues),delta2)
 
 
-    write(*,*) "derivative input->hidden"
-    call writeMatrix(inputToHiddenDerivative,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
+    !write(*,*) "derivative input->hidden"
+    !call writeMatrix(inputToHiddenDerivative,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
-    write(*,*) "derivative hidden->output"
-    call writeMatrix(hiddenToOutputDerivative,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
+    !write(*,*) "derivative hidden->output"
+    !call writeMatrix(hiddenToOutputDerivative,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
-    call random_number(momentum)
-    call random_number(step)
+    step=0.3
 
-    write (*,*) "Learning rate:", step
+    !write (*,*) "Learning rate:", step
 
-    inputToHiddenWeights = inputToHiddenWeights +step*inputToHiddenDerivative
-    hiddenToOutputWeights = hiddenToOutputWeights +step*hiddenToOutputDerivative
+    inputToHiddenWeights = inputToHiddenWeights -step*inputToHiddenDerivative
+    hiddenToOutputWeights = hiddenToOutputWeights -step*hiddenToOutputDerivative
 
 
-    write(*,*)
-    write(*,*) "Cost equals"
+    !write(*,*)
+    !write(*,*) "Cost equals"
     call costFunction(outputValuesSigmoid,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns,cost)
-    write(*,*) cost
+    !write(*,*) cost
 
     costValues(m) = cost
 end do
+
+!do i=1,iterationSteps
+ !   write(*,*) costValues(i)
+!end do
+
+call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
+call writeMatrix(outputValuesDenormalized,outputDataRows,outputDataColumns)
 end subroutine
 
 
