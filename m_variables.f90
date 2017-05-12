@@ -12,6 +12,10 @@ module variables
 
     real, allocatable:: inputValuesNormalized(:,:), outputValuesNormalized(:,:)
     real, allocatable:: outputValuesExpectedNormalized(:,:), outputValuesDenormalized(:,:)
+    real, allocatable:: outputValuesExpectedNormalizedSigmoided(:,:)
+
+
+
     real,allocatable:: inputToHiddenWeights(:,:), inputToHiddenWeightsDerivatives(:,:)
     real,allocatable:: hiddenToOutputWeights(:,:), hiddenToOutputWeightsDerivatives(:,:)
     real,allocatable:: inputValues(:,:)
@@ -24,7 +28,7 @@ module variables
     real, allocatable:: delta2(:,:)
 
     real outputValuesParameters(3), inputValuesParameters(3)
-    real costValues(:)
+    real,allocatable:: costValues(:)
 
     real randomFromRange
     real reallyRandom

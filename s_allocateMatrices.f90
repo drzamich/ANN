@@ -35,5 +35,6 @@ subroutine allocateMatrices
     allocate(delta2(outputDataRows,outputDataRows))
 
     allocate(inputValuesNormalized(inputDataRows,inputDataColumns))
-    allocate costValues(iterationSteps)
+    allocate(costValues(iterationSteps))
+    allocate(outputValuesExpectedNormalizedSigmoided(outputDataRows,outputDataColumns))
 end subroutine

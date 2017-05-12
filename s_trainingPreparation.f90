@@ -39,6 +39,13 @@ subroutine displayTrainingData
     write(*,*) "(Expected) output values normalized"
     call writeMatrix(outputValuesExpectedNormalized,outputDataRows,outputDataColumns)
 
+    call matrixSigmoid(outputValuesExpectedNormalized,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
+
+    write(*,*)
+    write(*,*) "(Expected) output values normalized sigmoided"
+    call writeMatrix(outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
+
+
 end subroutine
 
 subroutine trainingFirstPhase
@@ -90,7 +97,7 @@ do m=1,iterationSteps
     call matrixSigmoidDerivative(outputValues,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
 
-    delta3 = (-1)*(outputValuesExpected-outputValuesSigmoid)*outputValuesSigmoidDerivative
+    delta3 = (-1)*(outputValuesExpectedNormalized-outputValuesSigmoid)*outputValuesSigmoidDerivative
 
     hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
 
@@ -112,13 +119,13 @@ do m=1,iterationSteps
 
     write (*,*) "Learning rate:", step
 
-    inputToHiddenWeights = inputToHiddenWeights -step*inputToHiddenDerivative
-    hiddenToOutputWeights = hiddenToOutputWeights -step*hiddenToOutputDerivative
+    inputToHiddenWeights = inputToHiddenWeights +step*inputToHiddenDerivative
+    hiddenToOutputWeights = hiddenToOutputWeights +step*hiddenToOutputDerivative
 
 
     write(*,*)
     write(*,*) "Cost equals"
-    call costFunction(outputValuesSigmoid,outputValuesExpected,outputDataRows,outputDataColumns,cost)
+    call costFunction(outputValuesSigmoid,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns,cost)
     write(*,*) cost
 
     costValues(m) = cost
