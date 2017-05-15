@@ -42,5 +42,4 @@ module variables
     real, allocatable:: inputTraining(:,:), outputTraining(:,:), inputTrainingNormalized(:,:), outputTrainingNormalized(:,:)
     real, allocatable:: trainingSigmoid(:,:)
     real trainingParameters(3)
-
 end module

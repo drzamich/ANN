@@ -134,13 +134,15 @@ do i=1,iterationSteps
     end if
 
     if(i==iterationSteps) then
-        write(*,*) outputValues
-        write(*,*) inputToHiddenWeights
-        write(*,*) hiddenToOutputWeights
+        !write(*,*) outputValues
+        !write(*,*) inputToHiddenWeights
+        !write(*,*) hiddenToOutputWeights
     end if
 
 end do
 
+write(*,*) "Network trained."
+write(*,*)
 
 call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
 
