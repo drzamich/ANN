@@ -26,23 +26,11 @@ subroutine displayTrainingData
     write(*,*) "Input values"
     call writeMatrix(inputValues,inputDataRows,inputDataColumns)
 
-    !write(*,*) "Input values normalized"
-    !call writeMatrix(inputValuesNormalized,inputDataRows,inputDataColumns)
-
     write(*,*)
     write(*,*) "(Expected) output values"
     call writeMatrix(outputValuesExpected,outputDataRows,outputDataColumns)
 
-
-    !write(*,*)
-    !write(*,*) "(Expected) output values normalized"
-    !call writeMatrix(outputValuesExpectedNormalized,outputDataRows,outputDataColumns)
-
     call matrixSigmoid(outputValuesExpectedNormalized,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
-
-    !write(*,*)
-    !write(*,*) "(Expected) output values normalized sigmoided"
-    !call writeMatrix(outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
 
 
 end subroutine
@@ -54,50 +42,41 @@ subroutine trainingFirstPhase
 do i=1,iterationSteps
 
 
-    !write(*,*) "-----------------------------------------"
-    !write(*,*) "Step", m
-
-    !write(*,*)
-    !write(*,*) "Weights from input to hidden layer"
-    !call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
-
-
-
     ! values of hidden layer = input values * weights
     hiddenValues = matmul(inputValuesNormalized,inputToHiddenWeights)
 
-    !write(*,*)
-    !write(*,*) "hidden values"
-    !call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
+    ! new ---------------
+    call normalizeMatirx(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
+    ! end new ----------------------
 
     !sigmoiding hidden values
     call matrixSigmoid(hiddenValues,hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
 
-    !write(*,*)
-    !write(*,*) "hidden values sigmoided"
-    !call writeMatrix(hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
-
-    !write(*,*)
-    !write(*,*) "Weights from hidden to output layer"
-    !call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
-
     !values of output layer = hidden values * weights
     outputValues = matmul(hiddenValuesSigmoid,hiddenToOutputWeights)
 
-    !write(*,*) "output values"
-    !call writeMatrix(outputValues,outputDataRows,outputDataColumns)
+    if(i==iterationSteps) then
+        write(*,*) "ostatni przed normalizacja"
+        call writeMatrix(outputValues,outputDataRows,outputDataColumns)
+    end if
+
+    outputValuesNormalized = outputValues
+    !new -------------
+    call normalizeMatirx(outputValuesNormalized,outputDataRows,outputDataColumns)
+    !end new -------------
+
 
     !sigmoiding output values
-    call matrixSigmoid(outputValues,outputValuesSigmoid,outputDataRows,outputDataColumns)
+    call matrixSigmoid(outputValuesNormalized,outputValuesSigmoid,outputDataRows,outputDataColumns)
 
-    !write(*,*) "output values (sigmoided)"
-    !call writeMatrix(outputValuesSigmoid,outputDataRows,outputDataColumns)
+    call matrixSigmoidDerivative(outputValuesNormalized,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
+    ! OLD
+    !delta3 = (-1)*(outputValuesExpectedNormalizedSigmoided-outputValuesSigmoid)*outputValuesSigmoidDerivative
 
-    call matrixSigmoidDerivative(outputValues,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
-
-
-    delta3 = (-1)*(outputValuesExpectedNormalizedSigmoided-outputValuesSigmoid)*outputValuesSigmoidDerivative
+    !NEW
+    delta3 = (-1)*(outputValuesExpected-outputValues)*outputValuesSigmoidDerivative
+    !end new
 
     hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
 
@@ -107,25 +86,13 @@ do i=1,iterationSteps
 
     inputToHiddenDerivative = matmul(transpose(inputValues),delta2)
 
-
-    !write(*,*) "derivative input->hidden"
-    !call writeMatrix(inputToHiddenDerivative,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
-
-    !write(*,*) "derivative hidden->output"
-    !call writeMatrix(hiddenToOutputDerivative,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
-
     step=0.3
 
-    !write (*,*) "Learning rate:", step
 
     inputToHiddenWeights = inputToHiddenWeights -step*inputToHiddenDerivative
     hiddenToOutputWeights = hiddenToOutputWeights -step*hiddenToOutputDerivative
 
-
-    !write(*,*)
-    !write(*,*) "Cost equals"
     call costFunction(outputValuesSigmoid,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns,cost)
-    !write(*,*) cost
 
     costValues(i) = cost
 
@@ -133,21 +100,47 @@ do i=1,iterationSteps
         write(*,*) "Step", i
     end if
 
-    if(i==iterationSteps) then
-        !write(*,*) outputValues
-        !write(*,*) inputToHiddenWeights
-        !write(*,*) hiddenToOutputWeights
-    end if
 
 end do
 
 write(*,*) "Network trained."
 write(*,*)
 
-call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
+write(*,*) "Checking the net with value "
+read(*,*) testValue(1,1)
 
-write(*,*) "Values after training the net"
-call writeMatrix(outputValuesDenormalized,outputDataRows,outputDataColumns)
+!normalizing the test value
+testValue(1,1) = (testValue(1,1)-inputValuesParameters(1))/(inputValuesParameters(3)-inputValuesParameters(2))
 
-call plotCost
+write(*,*) "Normalized testValue:", testValue(1,1)
+
+hiddenValuesChecking = matmul(testValue,inputToHiddenWeights)
+
+! new ---------------
+call normalizeMatirx(hiddenValuesChecking,1,hiddenValuesColumns)
+
+call matrixSigmoid(hiddenValuesChecking,hiddenValuesCheckingSigmoid,1,hiddenValuesColumns)
+
+outputValuesChecking = matmul(hiddenValuesCheckingSigmoid,hiddenToOutputWeights)
+
+write(*,*) outputValuesChecking
+
+
+
+!write(*,*) "Weights input->hidden"
+!write(*,*) inputToHiddenWeights
+
+!write(*,*) "Weights hidden->output"
+!write(*,*) hiddenToOutputWeights
+
+!OLD
+!call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
+
+!new
+!call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,inputValuesParameters)
+
+!write(*,*) "Values after training the net"
+!call writeMatrix(outputValuesDenormalized,outputDataRows,outputDataColumns)
+
+!call plotCost
 end subroutine

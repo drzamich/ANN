@@ -21,3 +21,8 @@ binary/
 compile.bat
 *.exe
 *.save-failed
+*.xlsx
+*.txt
+*.plt
+*.png
+

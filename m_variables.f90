@@ -42,4 +42,8 @@ module variables
     real, allocatable:: inputTraining(:,:), outputTraining(:,:), inputTrainingNormalized(:,:), outputTrainingNormalized(:,:)
     real, allocatable:: trainingSigmoid(:,:)
     real trainingParameters(3)
+
+    real testValue(1,1)
+    real, allocatable :: hiddenValuesChecking(:,:), hiddenValuesCheckingSigmoid(:,:)
+    real outputValuesChecking(1,1)
 end module

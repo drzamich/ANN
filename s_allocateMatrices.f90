@@ -45,4 +45,7 @@ subroutine allocateMatrices
     allocate(outputTrainingNormalized(outputDataRows+1,outputDataColumns))
 
     allocate(trainingSigmoid(inputDataRows+1,hiddenLayerCells))
+
+    allocate(hiddenValuesChecking(1,hiddenValuesColumns))
+    allocate(hiddenValuesCheckingSigmoid(1,hiddenValuesColumns))
 end subroutine
