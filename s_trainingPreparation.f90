@@ -58,6 +58,8 @@ do i=1,iterationSteps
     if(i==iterationSteps) then
         write(*,*) "ostatni przed normalizacja"
         call writeMatrix(outputValues,outputDataRows,outputDataColumns)
+        outputValuesSaved = outputValues
+        exit
     end if
 
     outputValuesNormalized = outputValues
@@ -75,7 +77,7 @@ do i=1,iterationSteps
     !delta3 = (-1)*(outputValuesExpectedNormalizedSigmoided-outputValuesSigmoid)*outputValuesSigmoidDerivative
 
     !NEW
-    delta3 = (-1)*(outputValuesExpected-outputValues)*outputValuesSigmoidDerivative
+    delta3 = (-1)*(outputValuesExpectedNormalized-outputValues)*outputValuesSigmoidDerivative
     !end new
 
     hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
@@ -106,24 +108,24 @@ end do
 write(*,*) "Network trained."
 write(*,*)
 
-write(*,*) "Checking the net with value "
-read(*,*) testValue(1,1)
+!write(*,*) "Checking the net with value "
+!read(*,*) testValue(1,1)
 
 !normalizing the test value
-testValue(1,1) = (testValue(1,1)-inputValuesParameters(1))/(inputValuesParameters(3)-inputValuesParameters(2))
+!testValue(1,1) = (testValue(1,1)-inputValuesParameters(1))/(inputValuesParameters(3)-inputValuesParameters(2))
 
-write(*,*) "Normalized testValue:", testValue(1,1)
+!write(*,*) "Normalized testValue:", testValue(1,1)
 
-hiddenValuesChecking = matmul(testValue,inputToHiddenWeights)
+!hiddenValuesChecking = matmul(testValue,inputToHiddenWeights)
 
 ! new ---------------
-call normalizeMatirx(hiddenValuesChecking,1,hiddenValuesColumns)
+!call normalizeMatirx(hiddenValuesChecking,1,hiddenValuesColumns)
 
-call matrixSigmoid(hiddenValuesChecking,hiddenValuesCheckingSigmoid,1,hiddenValuesColumns)
+!call matrixSigmoid(hiddenValuesChecking,hiddenValuesCheckingSigmoid,1,hiddenValuesColumns)
 
-outputValuesChecking = matmul(hiddenValuesCheckingSigmoid,hiddenToOutputWeights)
+!outputValuesChecking = matmul(hiddenValuesCheckingSigmoid,hiddenToOutputWeights)
 
-write(*,*) outputValuesChecking
+!write(*,*) outputValuesChecking
 
 
 
@@ -137,10 +139,11 @@ write(*,*) outputValuesChecking
 !call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
 
 !new
-!call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,inputValuesParameters)
 
-!write(*,*) "Values after training the net"
-!call writeMatrix(outputValuesDenormalized,outputDataRows,outputDataColumns)
+
+write(*,*) "Values after training the net"
+call denormalizeValues(outputValues,outputValuesDenormalized,outputDataRows,outputValuesParameters)
+call writeMatrix(outputValuesDenormalized,outputDataRows,outputDataColumns)
 
 !call plotCost
 end subroutine

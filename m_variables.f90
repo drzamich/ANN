@@ -20,7 +20,7 @@ module variables
     real,allocatable:: hiddenToOutputWeights(:,:), hiddenToOutputWeightsDerivatives(:,:)
     real,allocatable:: inputValues(:,:)
     real,allocatable:: hiddenValues(:,:), hiddenValuesSigmoid(:,:), hiddenValuesSigmoidDerivatives(:,:)
-    real, allocatable:: outputValues(:,:), outputValuesExpected(:,:)
+    real, allocatable:: outputValues(:,:), outputValuesExpected(:,:), outputValuesSaved(:,:)
     real, allocatable:: outputValuesSigmoid(:,:), outputValuesSigmoidDerivative(:,:)
     real, allocatable:: delta3(:,:)
     real, allocatable:: hiddenToOutputDerivative(:,:)

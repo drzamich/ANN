@@ -14,6 +14,7 @@ subroutine allocateMatrices
     allocate(outputValues(outputDataRows,outputDataColumns))
     allocate(outputValuesSigmoid(outputDataRows,outputDataColumns))
     allocate(outputValuesSigmoidDerivative(outputDataRows,outputDataColumns))
+    allocate(outputValuesSaved(outputDataRows,outputDataColumns))
 
     allocate(outputValuesNormalized(outputDataRows,outputDataColumns))
     allocate(outputValuesExpectedNormalized(outputDataRows,outputDataColumns))
