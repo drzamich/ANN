@@ -111,6 +111,9 @@ call writeMatrix(inputToHiddenWeights,1,hiddenLayerCells)
 write(*,*) "Weights hidden->output"
 call writeMatrix(hiddenToOutputWeights,hiddenLayerCells,1)
 
+
+call plotCost
+
 end subroutine
 
 
@@ -137,6 +140,4 @@ call denormalizeValues(outputValuesChecking,outputValuesCheckingDenormalized,1,o
 
 write(*,*) outputValuesCheckingDenormalized(1,1)
 
-
-call plotCost
 end subroutine
