@@ -32,6 +32,30 @@ subroutine normalizeValues(inputMatrix,outputMatrix,matrixSize,parameterMatrix)
 
 end subroutine
 
+subroutine forceNormalizeValues(inputMatrix,outputMatrix,matrixSize,parameterMatrix)
+    implicit none
+
+    integer matrixSize
+    real inputMatrix(matrixSize)
+    real outputMatrix(matrixSize)
+    real parameterMatrix(3)
+
+    real suma
+    real average
+    real maxValue
+    real minValue
+    integer i
+
+    average = parameterMatrix(1)
+    minValue = parameterMatrix(2)
+    maxValue = parameterMatrix(3)
+
+    do i=1,matrixSize
+        outputMatrix(i) = (inputMatrix(i)-average)/(maxValue-minValue)
+    end do
+
+
+end subroutine
 
 subroutine denormalizeValues(inputMatrix,outputMatrix,matrixSize,parameterMatrix)
     implicit none

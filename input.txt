@@ -1,24 +1,21 @@
-6   -hidden layer cells
-4   -inputDataRows - number of cells in input layer
+3   -hidden layer cells
+3   -inputDataRows - number of cells in input layer
 1   -inputDataColumns
 1   -outputData columns - number of cells in output layer
 
 INPUT VALUES
 2
-4
-6
-7
+5
+10
 
 OUTPUT VALUES
 4
-16
-36
-49
-
+10
+20
 
 -0.01    -lowerRandomWeightValue
 0.01     -upperRandomWeightValue
-1000000   - number of iterations
+3000000   - number of iterations
 100000 - step indicator program
 1000 - step indicator chart
 

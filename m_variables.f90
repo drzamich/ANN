@@ -10,7 +10,7 @@ module variables
 
     real lowerRandomWeightValue,upperRandomWeightValue
 
-    real, allocatable:: inputValuesNormalized(:,:), outputValuesNormalized(:,:)
+    real, allocatable:: inputValuesNormalized(:,:), outputValuesNormalized(:,:), outputValuesNormalizedForced(:,:)
     real, allocatable:: outputValuesExpectedNormalized(:,:), outputValuesDenormalized(:,:)
     real, allocatable:: outputValuesExpectedNormalizedSigmoided(:,:)
 
@@ -45,5 +45,5 @@ module variables
 
     real testValue(1,1)
     real, allocatable :: hiddenValuesChecking(:,:), hiddenValuesCheckingSigmoid(:,:)
-    real outputValuesChecking(1,1)
+    real outputValuesChecking(1,1), outputValuesCheckingDenormalized(1,1)
 end module

@@ -17,6 +17,7 @@ subroutine allocateMatrices
     allocate(outputValuesSaved(outputDataRows,outputDataColumns))
 
     allocate(outputValuesNormalized(outputDataRows,outputDataColumns))
+    allocate(outputValuesNormalizedForced(outputDataRows,outputDataColumns))
     allocate(outputValuesExpectedNormalized(outputDataRows,outputDataColumns))
     allocate(outputValuesDenormalized(outputDataRows,outputDataColumns))
 
@@ -38,6 +39,7 @@ subroutine allocateMatrices
     allocate(inputValuesNormalized(inputDataRows,inputDataColumns))
     allocate(costValues(iterationSteps))
     allocate(outputValuesExpectedNormalizedSigmoided(outputDataRows,outputDataColumns))
+
 
     allocate(inputTraining(inputDataRows+1,inputDataColumns))
     allocate(outputTraining(outputDataRows+1,outputDataColumns))
