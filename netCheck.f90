@@ -1,4 +1,4 @@
-subroutine netCheck
+subroutine netCheck_old
     use variables
     implicit none
     real valuee

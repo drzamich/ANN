@@ -7,8 +7,8 @@ program main
 
     call displayTrainingData
 
-    call trainingFirstPhase
+    call training
 
-    !call netCheck
+    call netCheck
 
 end

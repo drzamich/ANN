@@ -1,17 +1,19 @@
 3   -hidden layer cells
-3   -inputDataRows - number of cells in input layer
+4   -inputDataRows - number of cells in input layer
 1   -inputDataColumns
 1   -outputData columns - number of cells in output layer
 
 INPUT VALUES
 2
-5
+4
+6
 10
 
 OUTPUT VALUES
 4
-10
-20
+16
+36
+100
 
 -0.01    -lowerRandomWeightValue
 0.01     -upperRandomWeightValue
