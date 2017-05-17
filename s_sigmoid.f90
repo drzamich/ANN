@@ -42,18 +42,3 @@ subroutine matrixSigmoidDerivative(matrixA,matrixB,rows,columns)
         end do
     end do
 end subroutine
-
-subroutine matrixOfScalarMulti(matrixA,matrixB,matrixC,rows,columns)
-    implicit none
-    integer rows, columns
-    real matrixA(rows,columns)
-    real matrixB(rows,columns)
-    real matrixC(rows,columns)
-    integer i,j
-
-    do i=1,rows
-        do j=1,columns
-            matrixC(i,j) = matrixA(i,j)*matrixB(i,j)
-        end do
-    end do
-end subroutine
