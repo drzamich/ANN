@@ -138,5 +138,5 @@ call denormalizeValues(outputValuesChecking,outputValuesCheckingDenormalized,1,o
 write(*,*) outputValuesCheckingDenormalized(1,1)
 
 
-!call plotCost
+call plotCost
 end subroutine
