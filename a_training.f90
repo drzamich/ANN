@@ -47,6 +47,11 @@ end subroutine
 subroutine training
     use variables
     implicit none
+    real arbitraryMatrix(3)
+
+!
+! COMPARING ACTUAL EXPECTED VALUES WITH THE NET VALUES OF OUTPUT LAYER
+!
 
 do i=1,iterationSteps
     !calculating net values of hidden layer
@@ -58,14 +63,16 @@ do i=1,iterationSteps
     !calculating net values of net output layer
     outputValues = matmul(hiddenValuesSigmoid,hiddenToOutputWeights)
 
+    call normalizeValues(outputValues,outputValuesNormalized,inputDataRows,arbitraryMatrix)
+
     !sigmoiding output values
-    call matrixSigmoid(outputValues,outputValuesSigmoid,outputDataRows,outputDataColumns)
+    call matrixSigmoid(outputValuesNormalized,outputValuesSigmoid,outputDataRows,outputDataColumns)
 
     !calculating the derivatives hidden->output layer
     !calculating values of sigmoid derivative function of net output layer
-    call matrixSigmoidDerivative(outputValues,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
+    call matrixSigmoidDerivative(outputValuesNormalized,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
-    delta3 = (-1)*(outputValuesExpectedNormalized-outputValues)*outputValuesSigmoidDerivative
+    delta3 = (-1)*(outputValuesExpected-outputValues)*outputValuesSigmoidDerivative
 
     hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
 

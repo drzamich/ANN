@@ -15,7 +15,7 @@ OUTPUT VALUES
 
 -0.01    -lowerRandomWeightValue
 0.01     -upperRandomWeightValue
-300000   - number of iterations
+3000000   - number of iterations
 100000 - step indicator program
 1000 - step indicator chart
 
