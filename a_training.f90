@@ -96,6 +96,7 @@ do i=1,iterationSteps
 
     !displaying the value of net output layer in the last iteration step
     if(i==iterationSteps) then
+        write(*,*) "Net output values at the last step of iteration:"
        call writeMatrix(outputValues,outputDataRows,outputDataColumns)
         exit
     end if
