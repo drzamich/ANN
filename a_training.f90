@@ -136,6 +136,8 @@ call matrixSigmoid(hiddenValuesChecking,hiddenValuesCheckingSigmoid,1,hiddenValu
 
 outputValuesChecking = matmul(hiddenValuesCheckingSigmoid,hiddenToOutputWeights)
 
+write(*,*) "Value before denormalization: ", outputValuesChecking(1,1)
+
 !denormalizing the output of the net with parameters of output training data
 call denormalizeValues(outputValuesChecking,outputValuesCheckingDenormalized,1,outputValuesParameters)
 
