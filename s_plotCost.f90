@@ -16,6 +16,7 @@ subroutine plotCost
     write(10,*) 'set xrange[1:',iterationSteps,']'
     !write(10,*) 'set yrange[',costValues(iterationSteps),':',costValues(1),']'
     !write(10,*) 'set yrange[',costValues(iterationSteps),':',costValues(1),']'
+    write(10,*) 'set logscale x'
     write(10,*) 'set logscale y'
     write(10,*) 'set xlabel "Step"'
     write(10,*) 'set ylabel "Cost value"'

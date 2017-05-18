@@ -92,7 +92,7 @@ do i=1,iterationSteps
     hiddenToOutputWeights = hiddenToOutputWeights -step*hiddenToOutputDerivative
 
     !calculating the cost of the function
-    call costFunction(outputValuesSigmoid,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns,cost)
+    call costFunction(outputValues,outputValuesExpected,outputDataRows,outputDataColumns,cost)
 
     costValues(i) = cost
 
