@@ -9,13 +9,13 @@ INPUT VALUES
 6
 
 OUTPUT VALUES
-4
-16
-36
+20
+40
+60
 
 -0.01    -lowerRandomWeightValue
 0.01     -upperRandomWeightValue
-3000000   - number of iterations
+300000   - number of iterations
 100000 - step indicator program
 1000 - step indicator chart
 
