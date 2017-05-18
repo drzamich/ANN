@@ -72,6 +72,7 @@ do i=1,iterationSteps
     !calculating values of sigmoid derivative function of net output layer
     call matrixSigmoidDerivative(outputValuesNormalized,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
+
     delta3 = (-1)*(outputValuesExpected-outputValues)*outputValuesSigmoidDerivative
 
     hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
@@ -104,8 +105,7 @@ do i=1,iterationSteps
     !displaying the value of net output layer in the last iteration step
     if(i==iterationSteps) then
         write(*,*) "Net output values at the last step of iteration:"
-       call writeMatrix(outputValues,outputDataRows,outputDataColumns)
-        exit
+        call writeMatrix(outputValues,outputDataRows,outputDataColumns)
     end if
 
 
@@ -144,10 +144,5 @@ call matrixSigmoid(hiddenValuesChecking,hiddenValuesCheckingSigmoid,1,hiddenValu
 outputValuesChecking = matmul(hiddenValuesCheckingSigmoid,hiddenToOutputWeights)
 
 write(*,*) "Output value: ", outputValuesChecking(1,1)
-
-!denormalizing the output of the net with parameters of output training data
-!call denormalizeValues(outputValuesChecking,outputValuesCheckingDenormalized,1,outputValuesParameters)
-
-!write(*,*) outputValuesCheckingDenormalized(1,1)
 
 end subroutine

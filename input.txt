@@ -1,4 +1,4 @@
-12   -hidden layer cells
+3   -hidden layer cells
 3   -inputDataRows - number of cells in input layer
 1   -inputDataColumns
 1   -outputData columns - number of cells in output layer
