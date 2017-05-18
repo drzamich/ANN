@@ -40,7 +40,6 @@ subroutine forceNormalizeValues(inputMatrix,outputMatrix,matrixSize,parameterMat
     real outputMatrix(matrixSize)
     real parameterMatrix(3)
 
-    real suma
     real average
     real maxValue
     real minValue
@@ -65,7 +64,6 @@ subroutine denormalizeValues(inputMatrix,outputMatrix,matrixSize,parameterMatrix
     real outputMatrix(matrixSize)
     real parameterMatrix(3)
 
-    real suma
     real average
     real maxValue
     real minValue

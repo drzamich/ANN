@@ -26,8 +26,6 @@ subroutine displayTrainingData
     !normalizing training input data to the range -0.5 - 0.5; saving the parameters (min,max,average) to parameter array
     call normalizeValues(inputValues,inputValuesNormalized,inputDataRows,inputValuesParameters)
 
-    !normalizing training output data to the range -0.5 - 0.5; saving the parameters (min,max,average) to parameter array
-    call normalizeValues(outputValuesExpected,outputValuesExpectedNormalized,outputDataRows,outputValuesParameters)
 
     !displaying training input data on the screen
     write(*,*) "Input values"
@@ -38,9 +36,6 @@ subroutine displayTrainingData
     write(*,*) "(Expected) output values"
     call writeMatrix(outputValuesExpected,outputDataRows,outputDataColumns)
 
-
-    !sigmoiding matrix with normalized output data
-    call matrixSigmoid(outputValuesExpectedNormalized,outputValuesExpectedNormalizedSigmoided,outputDataRows,outputDataColumns)
 
 end subroutine
 
