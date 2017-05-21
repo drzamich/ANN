@@ -4,7 +4,7 @@
 real function objective(x)
     implicit none
     real x
-    objective =2*x
+    objective =sin(2*x)
 end function
 
 subroutine generateTrainingData
@@ -50,11 +50,4 @@ subroutine readTrainingData
     write(*,*) inputValues
     write(*,*) outputValuesExpected
    outputValuesExpected=outputValuesExpected*factor
-end subroutine
-
-
-
-subroutine generateCheckingData
-    use variables
-
 end subroutine

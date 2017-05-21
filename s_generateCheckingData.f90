@@ -8,16 +8,15 @@ subroutine generateCheckingData
     real x, x_norm
     real objective
 
-
     bottom=inputValues(1,1)
     top = inputValues(hiddenValuesRows,1)
 
-    steps=int((top-bottom)/pointsChecking)+1
+    checkingStep=(top-bottom)/pointsChecking
 
 
     open(10,file='comparison.txt')
     x=bottom
-    do i=1,steps+2
+    do i=1,pointsChecking+1
 
         testValue(1,1) = (x-inputValuesParameters(1))/(inputValuesParameters(3)-inputValuesParameters(2))
 

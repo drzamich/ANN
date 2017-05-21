@@ -25,24 +25,3 @@ subroutine readInputFile
     close(10)
 
 end subroutine
-
-
-
-   ! allocate(inputValues(inputDataRows,inputDataColumns))
-
-    !do i=1,inputDataRows
-       ! read(10,*) (inputValues(i,j), j=1,inputDataColumns) !short form of the loop
-   ! enddo
-
-
-   ! outputDataRows=inputDataRows
-   ! allocate(outputValuesExpected(outputDataRows,outputDataColumns))
-
-   ! do i=1,outputDataRows
-   !
-   ! enddo
-
-
-
-   ! outputValuesExpected=outputValuesExpected*factor
-

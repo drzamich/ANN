@@ -30,7 +30,7 @@ subroutine displayTrainingData
     !displaying training output data on the screen
     write(*,*)
     write(*,*) "(Expected) output values"
-    call writeMatrix(outputValuesExpected,outputDataRows,outputDataColumns)
+    call writeMatrix(outputValuesExpected/factor,outputDataRows,outputDataColumns)
 
 
 end subroutine
@@ -107,96 +107,49 @@ do i=1,iterationSteps
         write(*,*) "Step", i
     end if
 
-    !displaying the value of net output layer in the last iteration step
-    if(i==iterationSteps) then
 
-        write(*,*) "Input -> 1st hidden weights:"
-        call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
+   if(i==iterationSteps) then
 
-        write(*,*) "Input -> 1st hidden weights derivative:"
-        call writeMatrix(inputToHiddenDerivative,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
+       ! write(*,*) "Input -> 1st hidden weights:"
+        !call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
-        write(*,*) "1st hidden layer values:"
-        call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
+       ! write(*,*) "Input -> 1st hidden weights derivative:"
+       ! call writeMatrix(inputToHiddenDerivative,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
 
-        write(*,*) "1st -> 2nd hidden weights:"
-        call writeMatrix(additionalLayerWeights,additionalLayerWeightsRows,additionalLayerWeightsColumns)
+       ! write(*,*) "1st hidden layer values:"
+       ! call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
 
-        write(*,*) "1st -> 2nd hidden weights derivative:"
-        call writeMatrix(additionalLayerWeightsDerivative,additionalLayerWeightsRows,additionalLayerWeightsColumns)
+      !  write(*,*) "1st -> 2nd hidden weights:"
+       ! call writeMatrix(additionalLayerWeights,additionalLayerWeightsRows,additionalLayerWeightsColumns)
 
-        write(*,*) "2nd hidden values:"
-        call writeMatrix(additionalLayerValues,additionalLayerValuesRows,additionalLayerValuesColumns)
+      !  write(*,*) "1st -> 2nd hidden weights derivative:"
+       ! call writeMatrix(additionalLayerWeightsDerivative,additionalLayerWeightsRows,additionalLayerWeightsColumns)
 
-        write(*,*) "2nd hidden -> output weights"
-        call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
+       ! write(*,*) "2nd hidden values:"
+       ! call writeMatrix(additionalLayerValues,additionalLayerValuesRows,additionalLayerValuesColumns)
 
-        write(*,*) "2nd hidden -> output weights derivative"
-        call writeMatrix(hiddenToOutputDerivative,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
+       ! write(*,*) "2nd hidden -> output weights"
+       ! call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
-        write(*,*) hiddenToOutputWeights
+        !write(*,*) "2nd hidden -> output weights derivative"
+        !call writeMatrix(hiddenToOutputDerivative,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
 
-        write(*,*) "Net output values at the last step of iteration:"
-        call writeMatrix(outputValues,outputDataRows,outputDataColumns)
+       ! write(*,*) hiddenToOutputWeights
+
+        !displaying the value of net output layer in the last iteration step
     end if
 
 
 end do
 
 write(*,*) "Network trained."
+write(*,*) "Net output values at the last step of iteration:"
+call writeMatrix(outputValues,outputDataRows,outputDataColumns)
 !displaying values of weights
-write(*,*) "Weights input->hidden"
-call writeMatrix(inputToHiddenWeights,1,hiddenLayerCells)
+!write(*,*) "Weights input->hidden"
+!call writeMatrix(inputToHiddenWeights,1,hiddenLayerCells)
 
-write(*,*) "Weights hidden->output"
-call writeMatrix(hiddenToOutputWeights,hiddenLayerCells,1)
-
-
-call plotCost
+!write(*,*) "Weights hidden->output"
+!call writeMatrix(hiddenToOutputWeights,hiddenLayerCells,1)
 
 end subroutine
-
-
-subroutine netCheck
-    use variables
-    implicit none
-
-!asking user for value with which the network will be checked
-write(*,*) "Checking the net with value "
-read(*,*) testValue(1,1)
-
-!normalizing the input given by user with the parameters (min,max,average) of training data
-testValue(1,1) = (testValue(1,1)-inputValuesParameters(1))/(inputValuesParameters(3)-inputValuesParameters(2))
-
-write(*,*) "Normalized test value:", testValue(1,1)
-
-!feeding the trained net with the checking input data
-hiddenValuesChecking = matmul(testValue,inputToHiddenWeights)
-
-write(*,*) "hidden values checking"
-write(*,*) hiddenValuesChecking
-
-call matrixSigmoid(hiddenValuesChecking,hiddenValuesCheckingSigmoid,1,hiddenValuesColumns)
-
-write(*,*) "hidden values checking sigmoid"
-write(*,*) hiddenValuesCheckingSigmoid
-
-additionalValuesChecking = matmul(hiddenValuesCheckingSigmoid,additionalLayerWeights)
-
-write(*,*) "additional values checking"
-write(*,*) additionalValuesChecking
-
-call matrixSigmoid(additionalValuesChecking,additionalValuesCheckingSigmoid,1,additionalLayerValuesColumns)
-
-write(*,*) "additional values checking sigmoid"
-write(*,*) additionalValuesCheckingSigmoid
-
-outputValuesChecking = matmul(additionalValuesCheckingSigmoid,hiddenToOutputWeights)
-
-write(*,*) "Output value: ", outputValuesChecking(1,1)
-
-end subroutine
-
-
-
-

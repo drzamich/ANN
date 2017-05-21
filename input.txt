@@ -5,9 +5,9 @@ NET ARCHITECTURE
 INPUT AND TRAINING DATA PARAMETERS
 1       inputDataColumns
 1       outputData columns
-1       lower interpolation boundary
+-3      lower interpolation boundary
 3       upper interpolation boundary
-2       number of sub-ranges in which the main range is divided to get points for training(uniform distribution between lower and upper boundary)
+15      number of sub-ranges in which the main range is divided to get points for training(uniform distribution between lower and upper boundary)
 100     number of sub-ranges in which the main range is divided to get points for checking the net(uniform distribution between lower and upper boundary)
 -0.01   lowerRandomWeightValue
 0.01    upperRandomWeightValue

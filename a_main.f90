@@ -18,7 +18,7 @@ program main
 
     call generateCheckingData
 
-    !call plot
+    call plot
 
     !call netCheck
 
