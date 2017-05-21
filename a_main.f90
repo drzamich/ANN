@@ -8,6 +8,9 @@ program main
 
     call training
 
-    call netCheck
+    !call netCheck
 
+    call compareResults
+
+    write(*,*) sin(1.0)
 end

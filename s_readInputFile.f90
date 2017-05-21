@@ -34,5 +34,9 @@ subroutine readInputFile
     read(10,*) iterationSteps
     read(10,*) stepIndicatorProgram
     read(10,*) stepIndicatorChart
+    read(10,*) checkingStep
+    read(10,*) factor
     close(10)
+
+    outputValuesExpected=outputValuesExpected*factor
 end subroutine

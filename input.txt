@@ -1,22 +1,80 @@
-3   -first hidden layer cells
-3 - second hidden layer cells
-3   -inputDataRows - number of cells in input layer
+7   -first hidden layer cells
+7 - second hidden layer cells
+31  -inputDataRows - number of cells in input layer
 1   -inputDataColumns
 1   -outputData columns - number of cells in output layer
 
 INPUT VALUES
+-3
+-2.8
+-2.6
+-2.4
+-2.2
+-2
+-1.8
+-1.6
+-1.4
+-1.2
+-1
+-0.8
+-0.6
+-0.4
+-0.2
+0
+0.2
+0.4
+0.6
+0.8
+1
+1.2
+1.4
+1.6
+1.8
 2
-4
-10
+2.2
+2.4
+2.6
+2.8
+3
 
 OUTPUT VALUES
-4
-16
-100
+-0.141120008
+-0.33498815
+-0.515501372
+-0.675463181
+-0.808496404
+-0.909297427
+-0.973847631
+-0.999573603
+-0.98544973
+-0.932039086
+-0.841470985
+-0.717356091
+-0.564642473
+-0.389418342
+-0.198669331
+0
+0.198669331
+0.389418342
+0.564642473
+0.717356091
+0.841470985
+0.932039086
+0.98544973
+0.999573603
+0.973847631
+0.909297427
+0.808496404
+0.675463181
+0.515501372
+0.33498815
+0.141120008
 
 -0.01    -lowerRandomWeightValue
 0.01     -upperRandomWeightValue
-1000000   - number of iterations   tom mitschel machine learning
-100000 - step indicator program
+100000   - number of iterations   tom mitschel machine learning
+10000 - step indicator program
 10 - step indicator chart
+0.01 - step within which the poinst are generated for checking
+1 factor that is needed to make the output data smaller in order for the net to work
 

@@ -44,6 +44,7 @@ module variables
     real outputValuesChecking(1,1)
 
 
+
     integer additionalLayerCells
     integer additionalLayerWeightsRows
     integer additionalLayerWeightsColumns
@@ -61,4 +62,7 @@ module variables
     real,allocatable:: deltaAdditional(:,:)
 
     real, allocatable:: additionalValuesChecking(:,:), additionalValuesCheckingSigmoid(:,:)
+
+    real checkingStep
+    real factor, factorInv
 end module
