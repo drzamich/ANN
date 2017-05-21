@@ -65,4 +65,10 @@ module variables
 
     real checkingStep
     real factor, factorInv
+
+    real lowerInterpBoundary
+    real upperInterpBoundary
+    real pointsTraining
+    real pointsChecking
+    real inputDataRowsR
 end module

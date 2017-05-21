@@ -2,15 +2,26 @@ program main
     use variables
     implicit none
 
-    call trainingPreparation
+    call readInputFile
+
+    call generateTrainingData
+
+    call readTrainingData
+
+    call allocateMatrices
+
+    call assignWeights
 
     call displayTrainingData
 
     call training
 
+    call generateCheckingData
+
+    !call plot
+
     !call netCheck
 
-    call compareResults
+    !call compareResults
 
-    write(*,*) sin(1.0)
 end
