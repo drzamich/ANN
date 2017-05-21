@@ -42,4 +42,23 @@ module variables
     real testValue(1,1)
     real, allocatable :: hiddenValuesChecking(:,:), hiddenValuesCheckingSigmoid(:,:)
     real outputValuesChecking(1,1)
+
+
+    integer additionalLayerCells
+    integer additionalLayerWeightsRows
+    integer additionalLayerWeightsColumns
+
+    integer additionalLayerValuesRows
+    integer additionalLayerValuesColumns
+
+    real,allocatable:: additionalLayerWeights(:,:)
+    real,allocatable:: additionalLayerWeightsDerivative(:,:)
+
+    real,allocatable:: additionalLayerValues(:,:)
+    real,allocatable:: additionalLayerValuesSigmoid(:,:)
+    real,allocatable:: additionalLayerValuesSigmoidDerivative(:,:)
+
+    real,allocatable:: deltaAdditional(:,:)
+
+    real, allocatable:: additionalValuesChecking(:,:), additionalValuesCheckingSigmoid(:,:)
 end module

@@ -4,6 +4,7 @@ subroutine readInputFile
 
     open(10,file='input.txt')
     read(10,*) hiddenLayerCells
+    read(10,*) additionalLayerCells
     read(10,*) inputDataRows
     read(10,*) inputDataColumns
     read(10,*) outputDataColumns

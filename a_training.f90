@@ -17,6 +17,10 @@ subroutine trainingPreparation
     call assignRandomWeights(hiddenToOutputWeights,&
                             hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns,&
                             lowerRandomWeightValue,upperRandomWeightValue)
+
+    call assignRandomWeights(additionalLayerWeights,&
+                            additionalLayerWeightsRows,additionalLayerWeightsColumns,&
+                            lowerRandomWeightValue,upperRandomWeightValue)
 end subroutine
 
 subroutine displayTrainingData
@@ -55,8 +59,12 @@ do i=1,iterationSteps
     !sigmoiding net values of hidden layer
     call matrixSigmoid(hiddenValues,hiddenValuesSigmoid,hiddenValuesRows,hiddenValuesColumns)
 
+    additionalLayerValues=matmul(hiddenValuesSigmoid,additionalLayerWeights)
+
+    call matrixSigmoid(additionalLayerValues,additionalLayerValuesSigmoid,additionalLayerValuesRows,additionalLayerValuesColumns)
+
     !calculating net values of net output layer
-    outputValues = matmul(hiddenValuesSigmoid,hiddenToOutputWeights)
+    outputValues = matmul(additionalLayerValuesSigmoid,hiddenToOutputWeights)
 
     call normalizeValues(outputValues,outputValuesNormalized,inputDataRows,arbitraryMatrix)
 
@@ -67,16 +75,25 @@ do i=1,iterationSteps
     !calculating values of sigmoid derivative function of net output layer
     call matrixSigmoidDerivative(outputValuesNormalized,outputValuesSigmoidDerivative,outputDataRows,outputDataColumns)
 
-
     delta3 = (-1)*(outputValuesExpected-outputValues)*outputValuesSigmoidDerivative
 
-    hiddenToOutputDerivative = matmul(transpose(hiddenValuesSigmoid),delta3)
+    hiddenToOutputDerivative = matmul(transpose(additionalLayerValuesSigmoid),delta3)
+
+
+    !calculating the derivatives hidden->additional layer
+    !sigmoid derivative
+    call matrixSigmoidDerivative(additionalLayerValues,additionalLayerValuesSigmoidDerivative,&
+                                    additionalLayerValuesRows,additionalLayerValuesColumns)
+
+    deltaAdditional = matmul(delta3,transpose(hiddenToOutputWeights))*additionalLayerValuesSigmoidDerivative
+
+    additionalLayerWeightsDerivative = matmul(transpose(hiddenValuesSigmoid),deltaAdditional)
 
     !calculating the derivatives input->hidden layer
     !calculating values of sigmoid derivative function of net output layer
     call matrixSigmoidDerivative(hiddenValues,hiddenValuesSigmoidDerivatives,hiddenValuesRows,hiddenValuesColumns)
 
-    delta2 = matmul(delta3,transpose(hiddenToOutputWeights))*hiddenValuesSigmoidDerivatives
+    delta2 = matmul(deltaAdditional,transpose(additionalLayerWeights))*hiddenValuesSigmoidDerivatives
 
     inputToHiddenDerivative = matmul(transpose(inputValuesNormalized),delta2)
 
@@ -86,6 +103,7 @@ do i=1,iterationSteps
     !correcting the weights' values
     inputToHiddenWeights = inputToHiddenWeights -step*inputToHiddenDerivative
     hiddenToOutputWeights = hiddenToOutputWeights -step*hiddenToOutputDerivative
+    additionalLayerWeights = additionalLayerWeights -step*additionalLayerWeightsDerivative
 
     !calculating the cost of the function
     call costFunction(outputValues,outputValuesExpected,outputDataRows,outputDataColumns,cost)
@@ -99,6 +117,33 @@ do i=1,iterationSteps
 
     !displaying the value of net output layer in the last iteration step
     if(i==iterationSteps) then
+
+        write(*,*) "Input -> 1st hidden weights:"
+        call writeMatrix(inputToHiddenWeights,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
+
+        write(*,*) "Input -> 1st hidden weights derivative:"
+        call writeMatrix(inputToHiddenDerivative,inputToHiddenWeightsRows,inputToHiddenWeightsColumns)
+
+        write(*,*) "1st hidden layer values:"
+        call writeMatrix(hiddenValues,hiddenValuesRows,hiddenValuesColumns)
+
+        write(*,*) "1st -> 2nd hidden weights:"
+        call writeMatrix(additionalLayerWeights,additionalLayerWeightsRows,additionalLayerWeightsColumns)
+
+        write(*,*) "1st -> 2nd hidden weights derivative:"
+        call writeMatrix(additionalLayerWeightsDerivative,additionalLayerWeightsRows,additionalLayerWeightsColumns)
+
+        write(*,*) "2nd hidden values:"
+        call writeMatrix(additionalLayerValues,additionalLayerValuesRows,additionalLayerValuesColumns)
+
+        write(*,*) "2nd hidden -> output weights"
+        call writeMatrix(hiddenToOutputWeights,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
+
+        write(*,*) "2nd hidden -> output weights derivative"
+        call writeMatrix(hiddenToOutputDerivative,hiddenToOutputWeightsRows,hiddenToOutputWeightsColumns)
+
+        write(*,*) hiddenToOutputWeights
+
         write(*,*) "Net output values at the last step of iteration:"
         call writeMatrix(outputValues,outputDataRows,outputDataColumns)
     end if
@@ -131,12 +176,30 @@ read(*,*) testValue(1,1)
 !normalizing the input given by user with the parameters (min,max,average) of training data
 testValue(1,1) = (testValue(1,1)-inputValuesParameters(1))/(inputValuesParameters(3)-inputValuesParameters(2))
 
+write(*,*) "Normalized test value:", testValue(1,1)
+
 !feeding the trained net with the checking input data
 hiddenValuesChecking = matmul(testValue,inputToHiddenWeights)
 
+write(*,*) "hidden values checking"
+write(*,*) hiddenValuesChecking
+
 call matrixSigmoid(hiddenValuesChecking,hiddenValuesCheckingSigmoid,1,hiddenValuesColumns)
 
-outputValuesChecking = matmul(hiddenValuesCheckingSigmoid,hiddenToOutputWeights)
+write(*,*) "hidden values checking sigmoid"
+write(*,*) hiddenValuesCheckingSigmoid
+
+additionalValuesChecking = matmul(hiddenValuesCheckingSigmoid,additionalLayerWeights)
+
+write(*,*) "additional values checking"
+write(*,*) additionalValuesChecking
+
+call matrixSigmoid(additionalValuesChecking,additionalValuesCheckingSigmoid,1,additionalLayerValuesColumns)
+
+write(*,*) "additional values checking sigmoid"
+write(*,*) additionalValuesCheckingSigmoid
+
+outputValuesChecking = matmul(additionalValuesCheckingSigmoid,hiddenToOutputWeights)
 
 write(*,*) "Output value: ", outputValuesChecking(1,1)
 

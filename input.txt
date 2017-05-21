@@ -1,4 +1,5 @@
-3   -hidden layer cells
+3   -first hidden layer cells
+3 - second hidden layer cells
 3   -inputDataRows - number of cells in input layer
 1   -inputDataColumns
 1   -outputData columns - number of cells in output layer
@@ -6,16 +7,16 @@
 INPUT VALUES
 2
 4
-6
+10
 
 OUTPUT VALUES
 4
 16
-36
+100
 
 -0.01    -lowerRandomWeightValue
 0.01     -upperRandomWeightValue
-300000   - number of iterations   tom mitschel machine learning
+1000000   - number of iterations   tom mitschel machine learning
 100000 - step indicator program
 10 - step indicator chart
 
